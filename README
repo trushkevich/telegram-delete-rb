@@ -1,7 +1,9 @@
+This application helps to delete all own messages from a selected telegram group.
+
 # Requirements
 
 - Ruby 2.4+
-- Compiled TDLib[https://github.com/tdlib/td]
+- Compiled [TDLib](https://github.com/tdlib/td)
 
 # How to build TDLib
 
