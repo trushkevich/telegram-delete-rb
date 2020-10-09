@@ -2,7 +2,8 @@ This application helps to delete all of your own messages for all group members 
 (without clearing the history, so all the others group members' messages will stay in place -
 for that you can just clear the history in your Telegram app).
 
-For now the app is raw and there can be some warnings and errors here and there, but
+For now the app is raw and there can be some warnings and errors here and there, in you encounter
+something critical pls create a new issue.
 
 # Requirements
 
