@@ -10,12 +10,8 @@ class GroupsMenu
     load_current_user.then do
       build_groups_list.then do
         select_and_confirm_group
-      end.rescue do |err|
-        puts " error: #{err}"
-      end.wait
-    end.rescue do |err|
-      puts " error: #{err}"
-    end.wait
+      end.rescue(&handle_error).wait
+    end.rescue(&handle_error).wait
   end
 
   private
@@ -23,9 +19,7 @@ class GroupsMenu
   def load_current_user
     $client.get_me.then do |user|
       @current_user = user
-    end.rescue do |err|
-      puts " error: #{err}"
-    end.wait
+    end.rescue(&handle_error).wait
   end
 
   def build_groups_list
@@ -46,13 +40,9 @@ class GroupsMenu
                     chat.type.respond_to?(:is_channel) && chat.type.is_channel
 
             @groups << chat
-          end.rescue do |err|
-            puts " error: #{err}"
-          end.wait
+          end.rescue(&handle_error).wait
         end
-      end.rescue do |err|
-        puts " error: #{err}"
-      end.wait
+      end.rescue(&handle_error).wait
     end
   end
 
@@ -89,14 +79,10 @@ class GroupsMenu
       if choice == 'Y'
         delete_messages.then do
           puts " Messages were successfully deleted.\n\n"
-        end.rescue do |err|
-          puts " error: #{err}"
-        end.wait
+        end.rescue(&handle_error).wait
       end
       select_and_confirm_group
-    end.rescue do |err|
-      puts " error: #{err}"
-    end.wait
+    end.rescue(&handle_error).wait
   end
 
   def search_messages(next_message_id = 0)
@@ -113,9 +99,7 @@ class GroupsMenu
       if @messages.size < result.total_count
         search_messages(result.messages.last.id)
       end
-    end.rescue do |err|
-      puts " error: #{err}"
-    end.wait
+    end.rescue(&handle_error).wait
   end
 
   def delete_messages
@@ -125,14 +109,18 @@ class GroupsMenu
       message_ids.each_slice(100) do |message_ids|
         $client.delete_messages(@current_group.id, message_ids, revoke).then do
           clear_messages
-        end.rescue do |err|
-          puts " error: #{err}"
-        end.wait
+        end.rescue(&handle_error).wait
       end
     end
   end
 
   def clear_messages
     @messages = []
+  end
+
+  def handle_error
+    Proc.new do |err|
+      puts " error: #{err}"
+    end
   end
 end
