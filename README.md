@@ -39,7 +39,14 @@ Then move `libtdjson.so` and `libtdjson.so.[1.6.0]` to `lib/libtdjson`
 
 # How to use
 
-First, you need to create a Telegram app at https://my.telegram.org/apps and get `App api_id` and `App api_hash`. Next, create `.env` file based on `.env.example`:
+First, you need to create a Telegram app at https://my.telegram.org/apps and get `App api_id` and `App api_hash`.
+
+Next, clone the project and `cd` to it:
+```
+git clone git@github.com:trushkevich/telegram-delete-rb.git
+cd telegram-delete-rb
+```
+Then create `.env` file based on `.env.example`:
 ```
 cp .env.example .env
 ```
