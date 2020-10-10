@@ -11,4 +11,8 @@ TD::Api.set_log_verbosity_level(1)
 
 $client = TD::Client.new
 
-TdConnection.establish
+begin
+  TdConnection.establish
+rescue SystemExit, Interrupt
+  puts "\n\n Exiting..."
+end
