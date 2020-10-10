@@ -48,7 +48,7 @@ and fill the environmental variables with the credentials you have just acquired
 TG_API_ID=[App api_id]
 TG_API_HASH=[App api_hash]
 ```
-You can start the app by running:
+You can start the app by running (after installing gems with `bundle install`):
 ```
 ruby main.rb
 ```
