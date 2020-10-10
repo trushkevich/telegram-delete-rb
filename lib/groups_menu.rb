@@ -61,8 +61,6 @@ class GroupsMenu
     puts ' ----------------'
     @groups.each_with_index do |group, idx|
       puts " #{idx + 1}. #{group.title}"
-      # puts group.attributes
-      # puts "\n\n"
     end
     puts ''
   end
