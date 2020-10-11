@@ -3,5 +3,5 @@ TD.configure do |config|
 
   config.client.api_id = ENV['TG_API_ID']
   config.client.api_hash = ENV['TG_API_HASH']
-  config.client.system_version = '28'
+  config.client.system_version = '1'
 end

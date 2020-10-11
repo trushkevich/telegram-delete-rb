@@ -2,7 +2,7 @@ This application helps to delete all of your own messages for all group members 
 (without clearing the history, so all the others group members' messages will stay in place -
 for that you can just clear the history in your native Telegram app).
 
-For now the app is raw and there can be some warnings and errors here and there, in you encounter
+For now the app is raw and there can be some warnings and errors here and there, if you encounter
 something critical pls create a new issue.
 
 # Requirements
@@ -60,33 +60,48 @@ You can start the app by running (after installing gems with `bundle install`):
 ruby main.rb
 ```
 After the first launch TDLib will ask you to provide the account phone number, confirmation code, etc.
-On the further launches it won't be needed. Session termination to be implemented in order to be able
-to switch accounts, until then in order to signout you will need to `rm -rf` `tdlib-ruby` directory
-(on Linux `/home/user/.tdlib-ruby`).
+On the further launches it won't be needed until you logout.
 
-After providing correct credentials the app will show your groups list (includes only basic and
-super groups - no channels, private or secret chats):
+After providing correct credentials the app will show you the main menu from which at the moment you
+can either go to the groups list or logout if you want to switch to a different account:
 ```
-AVAILABLE_GROUPS
-----------------
-1. Group 1
-2. Group 2
-3. Group 3
+ Signed in as: +phonenumber
+
+ 1: List available groups
+ 2: Logout
+
+ Provide your choice:
 ```
-and will ask to provide a group number.
+Choosing "1" will take you to the groups menu where the list of your groups will be shown
+(includes only basic and super groups - no channels, private or secret chats):
 ```
-Enter a number of a group where messages should be deleted: 1
+ Clear all messages in one of the available groups
+ -----------------------------------------
+ 1: Group 1
+ 2: Group 2
+ 3: Group 3
+
+ or
+ -----------------------------------------
+ b: Go back
+
+ Provide your choice:
 ```
-After submitting a group number there will be shown a confirmation message including information
-about the number of your messages that are going to be deleted:
+Choosing "b" will take you back to the main menu, while selecting some group's number will take you
+to the confirmation dialog where you will be able to see how many messages are going to be deleted and
+decide on whether you wish to proceed or not:
 ```
 Going to delete 345 messages in "Group 1". Are you sure? [Yn]:
 ```
 Answering `Y` will trigger messages deletion (for all group members - that's what I created this thing for),
-answering anything else will take you back to the groups list.
+answering anything else will take you back to the groups menu.
 
-For now that is all that the app can do. Some improvements can be added in the future, or can be not.
+For now that is all that the app can do. Some improvements can be added in the future (but no guarantees).
+
 Feel free to do whatever you want with the code as long as you comply with the
 [license](https://github.com/trushkevich/telegram-delete-rb/blob/master/LICENSE).
 
 Oh, and as for exiting the app - just hit `Ctrl+C` (or something similar if you are on Mac).
+
+If you want to completely wipe out all the Telegram data that is stored locally - you can `rm -rf`
+`tdlib-ruby` directory (on Linux `/home/user/.tdlib-ruby`).
