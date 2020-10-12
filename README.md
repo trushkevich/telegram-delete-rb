@@ -63,19 +63,21 @@ After the first launch TDLib will ask you to provide the account phone number, c
 On the further launches it won't be needed until you logout.
 
 After providing correct credentials the app will show you the main menu from which at the moment you
-can either go to the groups list or logout if you want to switch to a different account:
+can either go to the group chats list or private chats list or logout if you want to switch to a
+different account:
 ```
  Signed in as: +phonenumber
 
- 1: List available groups
- 2: Logout
+ 1: List group chats
+ 2: List private chats
+ 3: Logout
 
  Provide your choice:
 ```
-Choosing "1" will take you to the groups menu where the list of your groups will be shown
-(includes only basic and super groups - no channels, private or secret chats):
+Choosing "1" will take you to the group chats menu where the list of your group chats will be shown
+(includes only basic and super group chats - no channels, private or secret chats):
 ```
- Clear all messages in one of the available groups
+ Clear all messages in one of the available group chats
  -----------------------------------------
  1: Group 1
  2: Group 2
@@ -94,7 +96,10 @@ decide on whether you wish to proceed or not:
 Going to delete 345 messages in "Group 1". Are you sure? [Yn]:
 ```
 Answering `Y` will trigger messages deletion (for all group members - that's what I created this thing for),
-answering anything else will take you back to the groups menu.
+answering anything else will take you back to the group chats menu.
+
+Choosing "2" in the main menu will take you to the private chats menu where the list of your private
+chats will be shown with the same functionality as for group chats.
 
 For now that is all that the app can do. Some improvements can be added in the future (but no guarantees).
 

@@ -1,7 +1,8 @@
 class Menu::Main < Menu::Base
   CHOICES = {
-    '1' => 'List available groups',
-    '2' => 'Logout'
+    '1' => 'List group chats',
+    '2' => 'List private chats',
+    '3' => 'Logout'
   }
 
   def initialize(**)
@@ -40,16 +41,22 @@ class Menu::Main < Menu::Base
 
     case choice
     when '1'
-      show_groups_menu
+      show_group_chats_menu
     when '2'
+      show_private_chats_menu
+    when '3'
       log_out
     else
       handle_choice
     end
   end
 
-  def show_groups_menu
-    Menu::Groups.new(client: client, options: @options).show
+  def show_group_chats_menu
+    Menu::Chats::Group.new(client: client, options: @options).show
+  end
+
+  def show_private_chats_menu
+    Menu::Chats::Private.new(client: client, options: @options).show
   end
 
   def log_out
