@@ -1,3 +1,6 @@
+require 'dotenv'
+Dotenv.load
+
 require 'pry'
 require 'tdlib-ruby'
 
