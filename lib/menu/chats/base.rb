@@ -1,7 +1,10 @@
+require_relative '../../chat'
+
 module Menu::Chats
   class Base < Menu::Base
     CHOICES = {
-      'b' => 'Go back'
+      'b' => 'Go back',
+      'r' => 'Refresh'
     }
 
     def initialize(**)
@@ -16,7 +19,7 @@ module Menu::Chats
       build_chats_list.then do
         print_options
         handle_choice
-      end.rescue(&handle_error).wait
+      end.rescue(&ErrorHandler.handle).wait
     end
 
     private
@@ -28,31 +31,32 @@ module Menu::Chats
         offset_chat_id = 0
         limit = 1000
 
-        client.get_chats(chat_list, chat_order, offset_chat_id, limit).then do |chats|
-          chats.chat_ids.each do |chat_id|
-            client.get_chat(chat_id).then do |chat|
-              next unless valid_chat?(chat)
+        client.get_chats(chat_list, chat_order, offset_chat_id, limit).then do |td_chats|
+          puts ' Building chats list...'
+          td_chats.chat_ids.each do |td_chat_id|
+            client.get_chat(td_chat_id).then do |td_chat|
+              next unless valid_chat?(td_chat)
 
-              @chats << chat
-            end.rescue(&handle_error).wait
+              @chats << Chat.new(td_chat, client, @options).tap(&:count_messages)
+            end.rescue(&ErrorHandler.handle).wait
           end
-        end.rescue(&handle_error).wait
+        end.rescue(&ErrorHandler.handle).wait
       end
     end
 
-    def valid_chat?(chat)
-      !chat.type.respond_to?(:is_channel) || !chat.type.is_channel
+    def valid_chat?(td_chat)
+      !td_chat.type.respond_to?(:is_channel) || !td_chat.type.is_channel
     end
 
     def print_options
       puts ''
-      puts "\n Clear messages in one of available chats"
-      puts ' -----------------------------------------'
+      puts "\n Clear messages in one of available chats (own/unread)"
+      puts ' -------------------------------------------------------'
       @chats.each_with_index do |chat, idx|
-        puts " #{idx + 1}: #{chat.title}"
+        puts " #{idx + 1}: #{chat.option_text}"
       end
       puts "\n or"
-      puts ' -----------------------------------------'
+      puts ' -------------------------------------------------------'
       CHOICES.each do |value, label|
         puts " #{value}: #{label}"
       end
@@ -65,6 +69,8 @@ module Menu::Chats
 
       if choice == 'b'
         go_back
+      elsif choice == 'r'
+        restart
       elsif chat_id?(choice)
         @current_chat = @chats[choice.to_i - 1]
         ask_for_confirmation
@@ -89,10 +95,10 @@ module Menu::Chats
         if choice == 'Y'
           delete_messages.then do
             puts " Messages were successfully deleted."
-          end.rescue(&handle_error).wait
+          end.rescue(&ErrorHandler.handle).wait
         end
         restart
-      end.rescue(&handle_error).wait
+      end.rescue(&ErrorHandler.handle).wait
     end
 
     def search_messages(next_message_id = 0)
@@ -109,7 +115,7 @@ module Menu::Chats
         if @messages.size < result.total_count
           search_messages(result.messages.last.id)
         end
-      end.rescue(&handle_error).wait
+      end.rescue(&ErrorHandler.handle).wait
     end
 
     def delete_messages
@@ -118,7 +124,7 @@ module Menu::Chats
       Concurrent::Promises.future do
         message_ids.each_slice(100) do |message_ids|
           client.delete_messages(@current_chat.id, message_ids, revoke)
-                .rescue(&handle_error).wait
+                .rescue(&ErrorHandler.handle).wait
         end
       end.then do
         @messages = []

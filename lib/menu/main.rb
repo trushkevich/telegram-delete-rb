@@ -15,7 +15,7 @@ class Menu::Main < Menu::Base
     load_current_user.then do
       print_options
       handle_choice
-    end.rescue(&handle_error).wait
+    end.rescue(&ErrorHandler.handle).wait
   end
 
   private
@@ -23,7 +23,7 @@ class Menu::Main < Menu::Base
   def load_current_user
     client.get_me.then do |user|
       @current_user = user
-    end.rescue(&handle_error).wait
+    end.rescue(&ErrorHandler.handle).wait
   end
 
   def print_options
@@ -60,6 +60,6 @@ class Menu::Main < Menu::Base
   end
 
   def log_out
-    client.log_out.rescue(&handle_error).wait
+    client.log_out.rescue(&ErrorHandler.handle).wait
   end
 end

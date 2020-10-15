@@ -5,13 +5,4 @@ class Menu::Base
     @client = client
     @options = options
   end
-
-  private
-
-  def handle_error
-    Proc.new do |err|
-      puts " error: #{err}"
-      puts err.backtrace
-    end
-  end
 end

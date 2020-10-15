@@ -1,8 +1,10 @@
 require 'dotenv'
 Dotenv.load
 
+require 'forwardable'
 require 'pry'
 require 'tdlib-ruby'
+require 'colorize'
 
 # https://github.com/southbridgeio/tdlib-ruby/issues/36
 require_relative './lib/tdlib/types'
