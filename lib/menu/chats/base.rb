@@ -10,8 +10,7 @@ module Menu::Chats
     def initialize(**)
       super
       @chats = []
-      @current_chat = nil
-      @messages = []
+      @selected_chats = []
     end
 
     def show
@@ -50,13 +49,14 @@ module Menu::Chats
 
     def print_options
       puts ''
-      puts "\n Clear messages in one of available chats (own/unread)"
-      puts ' -------------------------------------------------------'
+      puts "\n Clear messages in one or more available chats (own/unread)"
+      puts " Multiple chats can be selected by separating numbers with \",\""
+      puts ' ------------------------------------------------------------------'
       @chats.each_with_index do |chat, idx|
         puts " #{idx + 1}: #{chat.option_text}"
       end
       puts "\n or"
-      puts ' -------------------------------------------------------'
+      puts ' ------------------------------------------------------------------'
       CHOICES.each do |value, label|
         puts " #{value}: #{label}"
       end
@@ -71,8 +71,8 @@ module Menu::Chats
         go_back
       elsif choice == 'r'
         restart
-      elsif chat_id?(choice)
-        @current_chat = @chats[choice.to_i - 1]
+      elsif chat_ids?(choice)
+        @selected_chats = @chats.values_at *chat_ids(choice)
         ask_for_confirmation
       else
         handle_choice
@@ -83,63 +83,51 @@ module Menu::Chats
       Menu::Main.new(client: client, options: options).show
     end
 
+    def chat_ids(choices)
+      choices.split(',').map(&:strip).map(&:to_i).map { |id| id - 1 }
+    end
+
+    def chat_ids?(choices)
+      choices.split(',').map(&:strip).all? do |choice|
+        chat_id?(choice)
+      end
+    end
+
     def chat_id?(choice)
       choice.match?(/\A\d+\z/) && (1..@chats.size).include?(choice.to_i)
     end
 
     def ask_for_confirmation
-      search_messages.then do
-        print " Going to delete #{@messages.size} messages in \"#{@current_chat.title}\"." \
-              " Are you sure? [Yn]: "
-        choice = STDIN.gets.strip
-        if choice == 'Y'
-          delete_messages.then do
-            puts " Messages were successfully deleted."
+      print_confirmation
+      choice = STDIN.gets.strip
+      if choice == 'Y'
+        process_selected_chats
+      end
+      restart
+    end
+
+    def print_confirmation
+      puts " Going to:"
+      @selected_chats.each do |chat|
+        puts "   - delete #{chat.own_count} messages in #{chat.title}"
+      end
+      print " Are you sure? [Yn]: "
+    end
+
+    def process_selected_chats
+      @selected_chats.each do |chat|
+        chat.search_messages.then do
+          chat.delete_messages.then do
+            puts " Messages were successfully deleted in #{chat.title}."
           end.rescue(&ErrorHandler.handle).wait
-        end
-        restart
-      end.rescue(&ErrorHandler.handle).wait
-    end
-
-    def search_messages(next_message_id = 0)
-      query = ''
-      sender_user_id = @options['my_id']
-      from_message_id = next_message_id
-      offset = 0
-      limit = 100
-      filter = TD::Types::SearchMessagesFilter::Empty.new
-      client.search_chat_messages(
-        @current_chat.id, query, sender_user_id, from_message_id,  offset,  limit, filter
-      ).then do |result|
-        @messages |= result.messages
-        if @messages.size < result.total_count
-          search_messages(result.messages.last.id)
-        end
-      end.rescue(&ErrorHandler.handle).wait
-    end
-
-    def delete_messages
-      message_ids = @messages.map(&:id)
-      revoke = true # delete for all members
-      Concurrent::Promises.future do
-        message_ids.each_slice(100) do |message_ids|
-          client.delete_messages(@current_chat.id, message_ids, revoke)
-                .rescue(&ErrorHandler.handle).wait
-        end
-      end.then do
-        @messages = []
+        end.rescue(&ErrorHandler.handle).wait
       end
     end
 
     def restart
-      clear
-      show
-    end
-
-    def clear
       @chats = []
-      @current_chat = nil
-      @messages = []
+      @selected_chats = []
+      show
     end
   end
 end
