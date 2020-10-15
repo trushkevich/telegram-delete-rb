@@ -75,23 +75,27 @@ different account:
  Provide your choice:
 ```
 Choosing "1" will take you to the group chats menu where the list of your group chats will be shown
-(includes only basic and super group chats - no channels, private or secret chats):
+(includes only basic and super group chats - no channels, private or secret chats). In front of
+each chat there will be shown numbers of own messages and unread messages in that chat:
 ```
- Clear all messages in one of the available group chats
- -----------------------------------------
- 1: Group 1
- 2: Group 2
- 3: Group 3
+ Clear all messages in one of the available group chats (own/unread)
+ -------------------------------------------------------------------
+ 1: Group 1 (0/0)
+ 2: Group 2 (10/2)
+ 3: Group 3 (0/1)
 
  or
- -----------------------------------------
+ -------------------------------------------------------------------
  b: Go back
+ r: Refresh
 
  Provide your choice:
 ```
-Choosing "b" will take you back to the main menu, while selecting some group's number will take you
-to the confirmation dialog where you will be able to see how many messages are going to be deleted and
-decide on whether you wish to proceed or not:
+Choosing "b" will take you back to the main menu.
+Choosing "r" will refresh current chat list and messages counts.
+Choosing some group's number will take you to the confirmation dialog where you will be able to
+see once again how many messages are going to be deleted and decide on whether you wish to proceed
+or not:
 ```
 Going to delete 345 messages in "Group 1". Are you sure? [Yn]:
 ```
