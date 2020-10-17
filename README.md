@@ -92,8 +92,8 @@ chat there will be shown numbers of own messages and unread messages in that cha
  a : Delete own messages in all chats
  ah: Delete own messages in all chats + clear history only for self
  aH: Delete own messages in all chats + clear history for all (for self if impossible)
- b: Go back
- r: Refresh
+ b : Go back
+ r : Refresh
 
  Provide your choice:
 ```
