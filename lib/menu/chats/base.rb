@@ -3,9 +3,14 @@ require_relative '../../chat'
 module Menu::Chats
   class Base < Menu::Base
     CHOICES = {
+      'a' => 'Delete own messages in all chats',
+      'ah' => 'Delete own messages in all chats + clear history only for self',
+      'aH' => 'Delete own messages in all chats + clear history for all (for self if impossible)',
       'b' => 'Go back',
       'r' => 'Refresh'
     }
+    HISTORY_OWN = 'own'
+    HISTORY_ALL = 'all'
 
     def init
       @chats = []
@@ -53,18 +58,18 @@ module Menu::Chats
 
     def print_options
       puts ''
-      puts "\n Clear messages in one or more available chats (own/unread)"
+      puts "\n Clear messages in one or more of available chats (own/unread)"
       puts " Multiple chats can be selected by separating numbers with \",\""
       puts " Appending \"h\" to chat number (1h) will also delete history for self"
       puts " Appending \"H\" to chat number (1H) will also delete history for all"
-      puts ' ---------------------------------------------------------------------'
+      puts ' --------------------------------------------------------------------------------------'
       @chats.each_with_index do |chat, idx|
         puts " #{idx + 1} [#{chat.option_modifiers}]: #{chat.option_text}"
       end
       puts "\n or"
-      puts ' ---------------------------------------------------------------------'
+      puts ' --------------------------------------------------------------------------------------'
       CHOICES.each do |value, label|
-        puts " #{value}: #{label}"
+        puts " #{value.ljust(2, ' ')}: #{label}"
       end
       puts ''
     end
@@ -77,6 +82,15 @@ module Menu::Chats
         go_back
       elsif choice == 'r'
         restart
+      elsif choice == 'a'
+        select_all_chats
+        ask_for_confirmation
+      elsif choice == 'ah'
+        select_all_chats(history: HISTORY_OWN)
+        ask_for_confirmation
+      elsif choice == 'aH'
+        select_all_chats(history: HISTORY_ALL)
+        ask_for_confirmation
       elsif chat_ids?(choice)
         select_chats(choice)
         ask_for_confirmation
@@ -93,6 +107,17 @@ module Menu::Chats
       @selected_chats = @chats.values_at *chat_ids(choice)
       @delete_own_history_in_chats = @chats.values_at *chat_ids_for_history(choice, for_all: false)
       @delete_all_history_in_chats = @chats.values_at *chat_ids_for_history(choice, for_all: true)
+    end
+
+    def select_all_chats(history: nil)
+      @selected_chats = @chats.select { |chat| chat.own_count > 0 }
+      if history == HISTORY_OWN
+        @delete_own_history_in_chats = @chats.select(&:can_be_deleted_only_for_self)
+      elsif history == HISTORY_ALL
+        @delete_all_history_in_chats = @chats.select do |chat|
+          chat.can_be_deleted_for_all_users || chat.can_be_deleted_only_for_self
+        end
+      end
     end
 
     def chat_ids(signatures)

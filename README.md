@@ -82,21 +82,30 @@ chat there will be shown numbers of own messages and unread messages in that cha
  Multiple chats can be selected by separating numbers with ","
  Appending "h" to chat number (1h) will also delete history for self
  Appending "H" to chat number (1H) will also delete history for all
- -------------------------------------------------------------------
+ --------------------------------------------------------------------------------------
  1 [hH]: Group 1 (5/0)
  2 [h ]: Group 2 (10/2)
  3 [  ]: Group 3 (3/1)
 
  or
- -------------------------------------------------------------------
+ --------------------------------------------------------------------------------------
+ a : Delete own messages in all chats
+ ah: Delete own messages in all chats + clear history only for self
+ aH: Delete own messages in all chats + clear history for all (for self if impossible)
  b: Go back
  r: Refresh
 
  Provide your choice:
 ```
-Choosing "b" will take you back to the main menu.
-Choosing "r" will refresh current chat list and messages counts.
-Choosing some group's number (or numbers separated with ",") will take you to the confirmation
+- choosing "a" will delete own messages in chats where own messages exist (after confirmation).
+- choosing "ah" will delete own messages in chats where own messages exist and will clear history
+only for self in those chats where it is possible (after confirmation).
+- choosing "aH" will delete own messages in chats where own messages exist and will clear history
+for all in those chats where it is possible and only for self in those chats where clearing for all
+is not possible but only for self is possible (after confirmation).
+- choosing "b" will take you back to the main menu.
+- choosing "r" will refresh current chat list and messages counts.
+- choosing some group number (or numbers separated with ",") will take you to the confirmation
 dialog where you will be able to see once again how many messages are going to be deleted and
 where and for whom history is going to be cleared and decide on whether you wish to proceed or not:
 ```
