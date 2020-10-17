@@ -10,6 +10,26 @@ something critical pls create a new issue.
 - Ruby 2.4+
 - Compiled [TDLib](https://github.com/tdlib/td)
 
+# Installation and configuration
+
+First, you need to create a Telegram app at https://my.telegram.org/apps and get `App api_id` and `App api_hash`.
+
+Next, clone the project and `cd` to it:
+```
+git clone git@github.com:trushkevich/telegram-delete-rb.git
+cd telegram-delete-rb
+```
+Then create `.env` file based on `.env.example`:
+```
+cp .env.example .env
+```
+and fill the environmental variables with the credentials you have just acquired
+```
+TG_API_ID=[App api_id]
+TG_API_HASH=[App api_hash]
+```
+then build TDLib and move the compiled library file into the project (see below)
+
 # How to build TDLib
 
 Get instructions for your platform at https://tdlib.github.io/td/build.html?language=Ruby
@@ -36,25 +56,6 @@ cd ..
 ls -l td/tdlib
 ```
 Then move `libtdjson.so` and `libtdjson.so.[1.6.0]` to `lib/libtdjson`
-
-# Installation and configuration
-
-First, you need to create a Telegram app at https://my.telegram.org/apps and get `App api_id` and `App api_hash`.
-
-Next, clone the project and `cd` to it:
-```
-git clone git@github.com:trushkevich/telegram-delete-rb.git
-cd telegram-delete-rb
-```
-Then create `.env` file based on `.env.example`:
-```
-cp .env.example .env
-```
-and fill the environmental variables with the credentials you have just acquired
-```
-TG_API_ID=[App api_id]
-TG_API_HASH=[App api_hash]
-```
 
 # How to use
 
