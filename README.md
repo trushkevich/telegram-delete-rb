@@ -37,7 +37,7 @@ ls -l td/tdlib
 ```
 Then move `libtdjson.so` and `libtdjson.so.[1.6.0]` to `lib/libtdjson`
 
-# How to use
+# Installation and configuration
 
 First, you need to create a Telegram app at https://my.telegram.org/apps and get `App api_id` and `App api_hash`.
 
@@ -55,6 +55,9 @@ and fill the environmental variables with the credentials you have just acquired
 TG_API_ID=[App api_id]
 TG_API_HASH=[App api_hash]
 ```
+
+# How to use
+
 You can start the app by running (after installing gems with `bundle install`):
 ```
 ruby main.rb
@@ -112,13 +115,13 @@ where and for whom history is going to be cleared and decide on whether you wish
 1H,2h,3
 ```
 ```
-Going to:
-  - delete 5 messages in "Group 1"
-  - delete 10 messages in "Group 2"
-  - delete 3 messages in "Group 3"
-  - clear history for all in "Group 1"
-  - clear history only for self in "Group 2"
-Are you sure? [Yn]:
+ Going to:
+   - delete 5 messages in "Group 1"
+   - delete 10 messages in "Group 2"
+   - delete 3 messages in "Group 3"
+   - clear history for all in "Group 1"
+   - clear history only for self in "Group 2"
+ Are you sure? [Yn]:
 ```
 Answering `Y` will trigger messages deletion (for all group members - that's what I created this
 thing for) and history clearing in all selected chats, answering anything else will take you back
