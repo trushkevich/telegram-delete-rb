@@ -4,8 +4,8 @@ module Menu::Chats
   class Base < Menu::Base
     CHOICES = {
       'a' => 'Delete own messages in all chats',
-      'ah' => 'Delete own messages in all chats + clear history only for self',
-      'aH' => 'Delete own messages in all chats + clear history for all (for self if impossible)',
+      'ah' => 'Delete own messages + clear history only for self in all chats',
+      'aH' => 'Delete own messages + clear history for all (for self if impossible) in all chats',
       'b' => 'Go back',
       'r' => 'Refresh'
     }
