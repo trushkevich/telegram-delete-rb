@@ -75,8 +75,8 @@ different account:
  Provide your choice:
 ```
 Choosing "1" will take you to the group chats menu where the list of your group chats will be shown
-(includes only basic and super group chats - no channels, private or secret chats). In front of
-each chat there will be shown numbers of own messages and unread messages in that chat:
+(includes only basic and super group chats - no channels, private or secret chats). For each
+chat there will be shown numbers of own messages and unread messages in that chat:
 ```
  Clear all messages in one of the available group chats (own/unread)
  Multiple chats can be selected by separating numbers with ","
@@ -108,7 +108,7 @@ Going to:
   - delete 10 messages in "Group 2"
   - delete 3 messages in "Group 3"
   - clear history for all in "Group 1"
-  - clear history only for self in "Group2"
+  - clear history only for self in "Group 2"
 Are you sure? [Yn]:
 ```
 Answering `Y` will trigger messages deletion (for all group members - that's what I created this
