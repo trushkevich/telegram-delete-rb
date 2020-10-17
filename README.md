@@ -80,10 +80,12 @@ each chat there will be shown numbers of own messages and unread messages in tha
 ```
  Clear all messages in one of the available group chats (own/unread)
  Multiple chats can be selected by separating numbers with ","
+ Appending "h" to chat number (1h) will also delete history for self
+ Appending "H" to chat number (1H) will also delete history for all
  -------------------------------------------------------------------
- 1: Group 1 (5/0)
- 2: Group 2 (10/2)
- 3: Group 3 (3/1)
+ 1 [hH]: Group 1 (5/0)
+ 2 [h ]: Group 2 (10/2)
+ 3 [  ]: Group 3 (3/1)
 
  or
  -------------------------------------------------------------------
@@ -96,16 +98,22 @@ Choosing "b" will take you back to the main menu.
 Choosing "r" will refresh current chat list and messages counts.
 Choosing some group's number (or numbers separated with ",") will take you to the confirmation
 dialog where you will be able to see once again how many messages are going to be deleted and
-decide on whether you wish to proceed or not:
+where and for whom history is going to be cleared and decide on whether you wish to proceed or not:
+```
+1H,2h,3
+```
 ```
 Going to:
-  - delete 5 messages in Group 1
-  - delete 10 messages in Group 2
-  - delete 3 messages in Group 3
+  - delete 5 messages in "Group 1"
+  - delete 10 messages in "Group 2"
+  - delete 3 messages in "Group 3"
+  - clear history for all in "Group 1"
+  - clear history only for self in "Group2"
 Are you sure? [Yn]:
 ```
 Answering `Y` will trigger messages deletion (for all group members - that's what I created this
-thing for) in all selected chats, answering anything else will take you back to the group chats menu.
+thing for) and history clearing in all selected chats, answering anything else will take you back
+to the group chats menu.
 
 Choosing "2" in the main menu will take you to the private chats menu where the list of your private
 chats will be shown with the same functionality as for group chats.
